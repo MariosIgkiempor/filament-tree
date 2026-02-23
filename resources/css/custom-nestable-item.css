@@ -52,7 +52,7 @@
 
 .filament-tree .dd-item .dd-content,
 .dd-dragel .dd-content {
-    @apply flex gap-1;
+    @apply flex flex-1 gap-1;
 }
 .filament-tree .dd-item .dd-content > .tree-item-display,
 .dd-dragel .tree-item-display {
@@ -91,7 +91,7 @@
 }
 
 .filament-tree .dd-item .fi-tree-actions-ctn {
-    @apply ml-auto mr-4 rtl:ml-4 rtl:mr-auto;
+    @apply mr-4 rtl:ml-4 rtl:mr-auto;
 }
 .filament-tree .dd-item .fi-tree-actions-ctn .fi-tree-actions {
     @apply flex shrink-0 items-center gap-3;
