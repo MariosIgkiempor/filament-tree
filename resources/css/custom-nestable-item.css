@@ -80,7 +80,7 @@
     }
 }
 .filament-tree .dd-item .dd-content .dd-item-btns {
-    @apply flex-1 flex items-center justify-center;
+    @apply flex shrink-0 items-center;
 }
 .filament-tree .dd-item .dd-content .dd-item-btns button svg {
     @apply w-4 h-4;
