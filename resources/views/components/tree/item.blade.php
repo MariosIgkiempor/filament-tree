@@ -22,10 +22,12 @@
         class="dd-handle"
     >
 
-        <button type="button">
-            <x-heroicon-m-ellipsis-vertical/>
-            <x-heroicon-m-ellipsis-vertical/>
-        </button>
+        @if ($tree->getEnableReordering())
+            <button type="button">
+                <x-heroicon-m-ellipsis-vertical/>
+                <x-heroicon-m-ellipsis-vertical/>
+            </button>
+        @endif
 
         <div class="dd-content dd-nodrag">
             <x-filament-tree::tree.item-display :record="$record" :title="$title" :icon="$icon" :description="$description"/>

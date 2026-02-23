@@ -118,3 +118,8 @@
 .filament-tree-component .nestable-menu .toolbar-btns.main {
     @apply flex-1;
 }
+
+/* Read-only tree: remove grab cursor from handle */
+.filament-tree-readonly .dd-item .dd-handle {
+    cursor: default;
+}

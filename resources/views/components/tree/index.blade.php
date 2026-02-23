@@ -1,18 +1,20 @@
 @php
     $containerKey = 'filament_tree_container_' . $this->getId();
     $maxDepth = $getMaxDepth() ?? 1;
+    $enableReordering = $getEnableReordering();
     $records = collect($this->getRootLayerRecords() ?? []);
     $toolbarActions = $tree->getToolbarActions() ?? [];
 @endphp
 
-<div class="filament-tree-component"
+<div @class(['filament-tree-component', 'filament-tree-readonly' => !$enableReordering])
     wire:disabled="updateTree"
     {{-- x-ignore --}}
     ax-load
     ax-load-src="{{ \Filament\Support\Facades\FilamentAsset::getAlpineComponentSrc('filament-tree-component', 'solution-forest/filament-tree') }}"
     x-data="treeNestableComponent({
         containerKey: {{ $containerKey }},
-        maxDepth: {{ $maxDepth }}
+        maxDepth: {{ $maxDepth }},
+        enableReordering: {{ $enableReordering ? 'true' : 'false' }}
     })">
     <x-filament::section>
         <x-slot name="heading">
@@ -28,14 +30,16 @@
                         {{ __('filament-tree::filament-tree.button.collapse_all') }}
                     </x-filament::button>
                 </div>
-                <div class="btn-group">
-                    <x-filament::button tag="button" data-action="save" x-on:click="save()" wire:loading.attr="disabled" wire:loading.class="cursor-wait opacity-70">
-                        <x-filament::loading-indicator class="h-4 w-4" wire:loading wire:target="updateTree"/>
-                        <span wire:loading.remove wire:target="updateTree">
-                            {{ __('filament-tree::filament-tree.button.save') }}
-                        </span>
-                    </x-filament::button>
-                </div>
+                @if ($enableReordering)
+                    <div class="btn-group">
+                        <x-filament::button tag="button" data-action="save" x-on:click="save()" wire:loading.attr="disabled" wire:loading.class="cursor-wait opacity-70">
+                            <x-filament::loading-indicator class="h-4 w-4" wire:loading wire:target="updateTree"/>
+                            <span wire:loading.remove wire:target="updateTree">
+                                {{ __('filament-tree::filament-tree.button.save') }}
+                            </span>
+                        </x-filament::button>
+                    </div>
+                @endif
             </div>
 
             @if (is_array($toolbarActions) && count($toolbarActions))

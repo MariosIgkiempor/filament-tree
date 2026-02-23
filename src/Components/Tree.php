@@ -20,6 +20,8 @@ class Tree extends ViewComponent
 
     protected int $maxDepth = 999;
 
+    protected bool $enableReordering = true;
+
     protected array $actions = [];
 
     protected array $toolbarActions = [];
@@ -47,6 +49,13 @@ class Tree extends ViewComponent
         return $this;
     }
 
+    public function enableReordering(bool $enableReordering = true): static
+    {
+        $this->enableReordering = $enableReordering;
+
+        return $this;
+    }
+
     public function actions(array $actions): static
     {
         $this->actions = $actions;
@@ -64,6 +73,11 @@ class Tree extends ViewComponent
     public function getMaxDepth(): int
     {
         return $this->maxDepth;
+    }
+
+    public function getEnableReordering(): bool
+    {
+        return $this->enableReordering;
     }
 
     public function getActions(): array

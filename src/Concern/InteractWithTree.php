@@ -113,6 +113,10 @@ trait InteractWithTree
      */
     public function updateTree(?array $list = null): array
     {
+        if (! $this->getCachedTree()->getEnableReordering()) {
+            return ['reload' => false];
+        }
+
         $needReload = false;
         if ($list) {
             $records = $this->getRecords()->keyBy(fn ($record) => $record->getAttributeValue($record->getKeyName()));

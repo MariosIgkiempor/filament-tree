@@ -8,10 +8,12 @@ import jQueryNestable from '../custom.nestable';
 export default function treeNestableComponent({
     containerKey,
     maxDepth,
+    enableReordering = true,
 }) {
     return {
         containerKey,
         maxDepth,
+        enableReordering,
 
         nestedTreeElement: null,
         nestedTree: null,
@@ -22,20 +24,15 @@ export default function treeNestableComponent({
             let nestedTreeElement = $(this.containerKey);
             this.nestedTreeElement = nestedTreeElement;
 
-            let nestedTree = this.compile(this.nestedTreeElement, {
-                group: containerKey,
-                maxDepth: maxDepth,
-                expandBtnHTML: '',
-                collapseBtnHTML: '',
-            });
-            this.nestedTree = nestedTree;
-            // Old version for jQuery Nestable Plugin (for reference)
-            // let nestedTree = this.nestedTreeElement.nestable({
-            //     group: containerKey,
-            //     maxDepth: maxDepth,
-            //     expandBtnHTML: '',
-            //     collapseBtnHTML: '',
-            // });
+            if (this.enableReordering) {
+                let nestedTree = this.compile(this.nestedTreeElement, {
+                    group: containerKey,
+                    maxDepth: maxDepth,
+                    expandBtnHTML: '',
+                    collapseBtnHTML: '',
+                });
+                this.nestedTree = nestedTree;
+            }
 
             // Custom expand/collapse buttons
             this.nestedTreeElement.on('click', '.dd-item-btns [data-action=expand]', function (el) {
@@ -72,6 +69,7 @@ export default function treeNestableComponent({
          * Save the tree
          */
         save: async function () {
+            if (!this.enableReordering) return;
             let value = jQueryNestable.buildNestable(this.nestedTree, 'serialize');
             // Save and reload the livewire
             let result = await this.$wire.updateTree(value);
@@ -89,7 +87,9 @@ export default function treeNestableComponent({
             if (!dd) {
                 return;
             }
-            jQueryNestable.buildNestable($(dd), 'collapseAll'); // jQueryNestable.buildNestable($('.dd'), 'collapseAll');
+            if (this.enableReordering) {
+                jQueryNestable.buildNestable($(dd), 'collapseAll');
+            }
             // $('.dd').nestable('collapseAll');
             $(dd).find('.dd-item-btns [data-action=expand]').removeClass('hidden'); // $('.dd').find('.dd-item-btns [data-action=expand]').removeClass('hidden');
             $(dd).find('.dd-item-btns [data-action=collapse]').addClass('hidden'); // $('.dd').find('.dd-item-btns [data-action=collapse]').addClass('hidden');
@@ -104,7 +104,9 @@ export default function treeNestableComponent({
             if (!dd) {
                 return;
             }
-            jQueryNestable.buildNestable($(dd), 'expandAll'); // jQueryNestable.buildNestable($('.dd'), 'expandAll');
+            if (this.enableReordering) {
+                jQueryNestable.buildNestable($(dd), 'expandAll');
+            }
             // $('.dd').nestable('expandAll');
             $(dd).find('.dd-item-btns [data-action=expand]').addClass('hidden'); // $('.dd').find('.dd-item-btns [data-action=expand]').addClass('hidden');
             $(dd).find('.dd-item-btns [data-action=collapse]').removeClass('hidden'); // $('.dd').find('.dd-item-btns [data-action=collapse]').removeClass('hidden');
